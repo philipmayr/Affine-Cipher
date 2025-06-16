@@ -3,11 +3,7 @@
 require "readline"
 
 def find_greatest_common_divisor(a, b)
-    if b == 0
-        return a
-    else
-        return find_greatest_common_divisor(b, a % b)
-    end
+    return (b == 0) ? a : find_greatest_common_divisor(b, a % b)
 end
 
 def find_modular_multiplicative_inverse(multiplicand, modulus)
