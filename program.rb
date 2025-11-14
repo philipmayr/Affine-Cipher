@@ -6,24 +6,24 @@ def find_greatest_common_divisor(a, b)
     return (b == 0) ? a : find_greatest_common_divisor(b, a % b)
 end
 
-def find_modular_multiplicative_inverse(multiplicand, modulus)
-    if find_greatest_common_divisor(multiplicand, modulus) != 1
+def find_modular_multiplicative_inverse(base, modulus)
+    if find_greatest_common_divisor(base, modulus) != 1
         return false
     end
     
-    multiplier = 0
+    inverse = 0
     residue = 0
 
     while residue != 1
-        residue = (multiplicand * multiplier) % modulus
-        multiplier += 1
+        residue = (base * inverse) % modulus
+        inverse += 1
     end
     
-    return multiplier - 1
+    return inverse - 1
 end
 
 loop do
-    puts "Enter message to be encrypted below:"
+    puts "Enter message to be enciphered below:"
     message = Readline.readline("➤ ", true).chars
     
     puts
@@ -72,7 +72,7 @@ loop do
     puts
     
     puts
-    puts "Enter space separated multiplier and increment integers (key pair alpha and beta values) below: "
+    puts "Enter space separated multiplier and increment integers (key pair alpha and beta values) below:"
     key = Readline.readline("➤ ", true)
     
     alpha, beta = key.split
@@ -84,7 +84,7 @@ loop do
             puts
             puts "Error: Alpha value (" + alpha.to_s + ") must be relatively prime to modulus value (" + modulus.to_s + ")."
             puts
-            puts "Enter space separated multiplier and increment integers (key pair alpha and beta values) below: "
+            puts "Enter space separated multiplier and increment integers (key pair alpha and beta values) below:"
             key = Readline.readline("➤ ", true)
             
             alpha, beta = key.split
@@ -127,11 +127,11 @@ loop do
     
     deciphered_message = ""
     
-    multiplicative_inverse_of_alpha = find_modular_multiplicative_inverse(alpha.to_i, modulus.to_i)
+    modular_multiplicative_inverse_of_alpha = find_modular_multiplicative_inverse(alpha.to_i, modulus.to_i)
     
     # x ≡ a⁻¹ ⋅ (y - b) mod m
     enciphered_message.scan(/../) do |pair|
-        deciphered_character = multiplicative_inverse_of_alpha * (pair.to_i - beta.to_i) % modulus
+        deciphered_character = modular_multiplicative_inverse_of_alpha * (pair.to_i - beta.to_i) % modulus
         if deciphered_character < 10
             deciphered_character = "0" + deciphered_character.to_s
         else
